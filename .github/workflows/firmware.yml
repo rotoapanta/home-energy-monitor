@@ -1,0 +1,37 @@
+name: firmware
+
+on:
+  pull_request:
+  push:
+    paths:
+      - 'src-esp32/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: '3.x'
+
+    - name: Install Platform IO
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U platformio
+
+    - name: Build
+      run: |
+        cd src-esp32
+        cp src/config/config.dist.h src/config/config.h
+        mkdir -p certificates
+        echo "a" > certificates/amazonrootca1.pem
+        echo "a" > certificates/certificate.pem.crt
+        echo "a" > certificates/private.pem.key
+        echo "a" > certificates/public.pem.key
+        platformio run
+      env:
+        CI: true

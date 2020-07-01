@@ -1,4 +1,4 @@
-
+#include <SPI.h>
 #include <WiFi.h>
 #include "EmonLib-esp32/EmonLib.h"
 //This is from https://github.com/Savjee/EmonLib-esp32 (ADC BITS changed)
@@ -33,15 +33,16 @@ void setup()
   #endif 
 
   // Setup the ADC
-  adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
+  adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_DB_11);
   analogReadResolution(ADC_BITS);
   pinMode(ADC_INPUT, INPUT);
 
   // i2c for the OLED panel
-  Wire.begin(5, 4); 
+ // Wire.begin(5, 4); //commented by Hari (externally connected OLED doesn't work with this if connected using SDA & SCL)
 
-  // Initialize the display
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C, false, false)) {
+  // Initialize the display  SSD1306_SWITCHCAPVCC
+  //!display.begin(SSD1306_SWITCHCAPVCC, 0x3C,false,false)
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     serial_println(F("SSD1306 allocation failed"));
     delay(10*1000);
     ESP.restart();

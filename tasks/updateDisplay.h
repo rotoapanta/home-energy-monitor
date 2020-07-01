@@ -29,9 +29,7 @@ void updateDisplay(void * parameter){
       drawAmpsWatts();
       drawMeasurementProgress();
     }
-
     display.display();
-
     // Sleep for 2 seconds, then update display again!
     vTaskDelay(2000 / portTICK_PERIOD_MS);
   }

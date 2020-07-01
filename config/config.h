@@ -77,7 +77,8 @@
  */
 #define NTP_TIME_SYNC_ENABLED true
 #define NTP_SERVER "pool.ntp.org"
-#define NTP_OFFSET_SECONDS 3600
+//Offset is UTC+5:30
+#define NTP_OFFSET_SECONDS 19800
 #define NTP_UPDATE_INTERVAL_MS 60000
 
 /**

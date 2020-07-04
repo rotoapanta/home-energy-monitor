@@ -12,6 +12,8 @@
 extern DisplayValues gDisplayValues;
 extern EnergyMonitor emon1;
 extern unsigned short measurements[];
+extern unsigned short measurements_v[];
+extern unsigned short measurements_a[];
 extern unsigned char measureIndex;
 
 void measureElectricity(void * parameter)
@@ -19,14 +21,26 @@ void measureElectricity(void * parameter)
     for(;;){
       serial_println("[ENERGY] Measuring...");
       long start = millis();
+      
+      emon1.calcVI(20,2000);
 
-      double amps = emon1.calcIrms(1480);
-      double watts = amps * HOME_VOLTAGE;
+      double realPower       = emon1.realPower;        //extract Real Power into variable
+      float apparentPower   = emon1.apparentPower;    //extract Apparent Power into variable
+      float powerFActor     = emon1.powerFactor;      //extract Power Factor into Variable
+      double supplyVoltage   = emon1.Vrms;             //extract Vrms into Variable
+      double amps            = emon1.Irms;             //extract Irms into Variable
+
+
+
+      //double amps = emon1.calcIrms(1480);
+      //double watts = amps * HOME_VOLTAGE;
 
       gDisplayValues.amps = amps;
-      gDisplayValues.watt = watts;
+      gDisplayValues.watt = realPower;
 
-      measurements[measureIndex] = watts;
+      measurements[measureIndex] = realPower;
+      measurements_v[measureIndex] = supplyVoltage;
+      measurements_a[measureIndex] = amps;
       measureIndex++;
       Serial.print("[DEBUG] measure Index:");
       Serial.println(measureIndex);

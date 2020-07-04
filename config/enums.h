@@ -14,6 +14,7 @@ enum DEVICE_STATE {
 
 // Place to store all the variables that need to be displayed.
 // All other functions should update these!
+// TODO:: Add Voltage Display
 struct DisplayValues {
   double watt;
   double amps;

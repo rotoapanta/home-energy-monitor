@@ -13,13 +13,19 @@
 #define DEVICE_NAME "hkv-home-energy-monitor"
 
 /**
+ * ADC input pin that is used to read out the Voltage Sensor (ZMPT101B)
+ */
+#define VOL_ADC_INPUT 34
+
+/**
  * ADC input pin that is used to read out the CT sensor
  */
-#define ADC_INPUT 34
+#define CUR_ADC_INPUT 35
 
 /**
  * The voltage of your home, used to calculate the wattage.
  * Try setting this as accurately as possible.
+ * Hari: We won't be using this.
  */
 #define HOME_VOLTAGE 245.0
 

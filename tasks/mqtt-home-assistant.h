@@ -11,7 +11,10 @@
     WiFiClient HA_net;
     MQTTClient HA_mqtt(1024);
 
-    extern unsigned short measurements[];
+extern unsigned short measurements[];
+extern unsigned short measurements_v[];
+extern unsigned short measurements_a[];
+
     const char* PROGMEM HA_discovery_topics[] = {
             "homeassistant/sensor/" DEVICE_NAME "p/config",
             "homeassistant/sensor/" DEVICE_NAME "v/config",
@@ -141,9 +144,13 @@
         vTaskDelete(NULL);
         }
 
-        char msg[30];
+        char msg[80];
         strcpy(msg, "{\"power\":");
             strcat(msg, String(measurements[LOCAL_MEASUREMENTS-1]).c_str());
+            strcat(msg, ",\"voltage\":");
+            strcat(msg, String(measurements_v[LOCAL_MEASUREMENTS-1]).c_str());
+            strcat(msg, ",\"current\":");
+            strcat(msg, String(measurements_a[LOCAL_MEASUREMENTS-1]).c_str());
         strcat(msg, "}");
 
         serial_print("[MQTT] HA publish: ");

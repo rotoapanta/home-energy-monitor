@@ -24,7 +24,10 @@ EnergyMonitor emon1;
 
 // Place to store local measurements before sending them off to AWS
 unsigned short measurements[LOCAL_MEASUREMENTS];
+unsigned short measurements_v[LOCAL_MEASUREMENTS];
+unsigned short measurements_a[LOCAL_MEASUREMENTS];
 unsigned char measureIndex = 0;
+
 
 void setup()
 {
@@ -33,9 +36,12 @@ void setup()
   #endif 
 
   // Setup the ADC
+  //https://github.com/espressif/arduino-esp32
   adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_DB_11);
+  adc1_config_channel_atten(ADC1_CHANNEL_7, ADC_ATTEN_DB_11);
   analogReadResolution(ADC_BITS);
-  pinMode(ADC_INPUT, INPUT);
+  pinMode(VOL_ADC_INPUT, INPUT);
+  pinMode(CUR_ADC_INPUT, INPUT);
 
   // i2c for the OLED panel
  // Wire.begin(5, 4); //commented by Hari (externally connected OLED doesn't work with this if connected using SDA & SCL)
@@ -56,7 +62,10 @@ void setup()
   display.setTextWrap(false);
 
   // Initialize emon library
-  emon1.current(ADC_INPUT, 30);
+  //emon1.current(ADC_INPUT, 30);
+
+  emon1.voltage(VOL_ADC_INPUT, 234.26, 1.7);  // Voltage: input pin, calibration, phase_shift
+  emon1.current(CUR_ADC_INPUT, 60.6);  // Current: Input Pin, Calibration
 
   // ----------------------------------------------------------------
   // TASK: Connect to WiFi & keep the connection alive.

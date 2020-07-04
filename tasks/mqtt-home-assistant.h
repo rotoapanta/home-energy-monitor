@@ -72,6 +72,7 @@
      * minute. If not, a new connection will be established.
      */
     void keepHAConnectionAlive(void * parameter){
+
         for(;;){
             // When we are connected, loop the MQTT client and sleep for 0,5s
             if(HA_mqtt.connected()){
@@ -110,6 +111,7 @@
      *       so that the energy monitor shows up in the device registry.
      */
     void HADiscovery(void * parameter){
+        delay(3000);
         for(;;){
             if(!HA_mqtt.connected()){
                 serial_println("[MQTT] HA: no MQTT connection.");

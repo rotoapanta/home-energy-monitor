@@ -27,11 +27,9 @@ void keepWiFiAlive(void * parameter){
 
         serial_println(F("[WIFI] Connecting"));
         gDisplayValues.currentState = CONNECTING_WIFI;
-
         WiFi.mode(WIFI_STA);
         WiFi.setHostname(DEVICE_NAME);
         WiFi.begin(WIFI_NETWORK, WIFI_PASSWORD);
-
         unsigned long startAttemptTime = millis();
 
         // Keep looping while we're not connected and haven't reached the timeout

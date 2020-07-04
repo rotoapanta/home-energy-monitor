@@ -41,7 +41,7 @@ void setup()
  // Wire.begin(5, 4); //commented by Hari (externally connected OLED doesn't work with this if connected using SDA & SCL)
 
   // Initialize the display  SSD1306_SWITCHCAPVCC
-  //!display.begin(SSD1306_SWITCHCAPVCC, 0x3C,false,false)
+  //!display.begin(SSD1306_SWITCHCAPVCC, 0x3C,false,false), //SSD1306_EXTERNALVCC
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     serial_println(F("SSD1306 allocation failed"));
     delay(10*1000);
@@ -121,7 +121,7 @@ void setup()
       "Update NTP time",
       5000,            // Stack size (bytes)
       NULL,             // Parameter
-      1,                // Task priority
+      2,                // Task priority // hari changed to 2
       NULL              // Task handle
     );
   #endif

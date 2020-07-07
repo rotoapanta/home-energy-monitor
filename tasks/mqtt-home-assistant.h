@@ -10,15 +10,20 @@
 
     WiFiClient HA_net;
     MQTTClient HA_mqtt(1024);
-
+    int statesCount = 5;    // No. of state values part of mqtt message.
 extern unsigned short measurements[];
+extern unsigned short measurements_ap[];
 extern unsigned short measurements_v[];
 extern unsigned short measurements_a[];
+extern unsigned short measurements_pf[];
 
+// real power (W), apparent power (VA), rms voltage (V), rms current (A) and power factor
     const char* PROGMEM HA_discovery_topics[] = {
-            "homeassistant/sensor/" DEVICE_NAME "p/config",
+            "homeassistant/sensor/" DEVICE_NAME "rp/config",
+            "homeassistant/sensor/" DEVICE_NAME "ap/config",
             "homeassistant/sensor/" DEVICE_NAME "v/config",
-            "homeassistant/sensor/" DEVICE_NAME "a/config"
+            "homeassistant/sensor/" DEVICE_NAME "a/config",
+            "homeassistant/sensor/" DEVICE_NAME "pf/config"
         };
     const char* PROGMEM HA_discovery_msg[] = { "{"
             "\"name\":\"" DEVICE_NAME "\","
@@ -27,6 +32,21 @@ extern unsigned short measurements_a[];
             "\"icon\":\"mdi:transmission-tower\","
             "\"state_topic\":\"homeassistant/sensor/" DEVICE_NAME "/state\","
             "\"value_template\":\"{{ value_json.power}}\","
+            "\"device\": {"
+                "\"name\":\"" DEVICE_NAME "\","
+                "\"sw_version\":\"2.0\","
+                "\"model\":\"HW V2\","
+                "\"manufacturer\":\"Hari Krishna Vemula\","
+                "\"identifiers\":[\"" DEVICE_NAME "\"]"
+            "}"
+        "}",
+        "{"
+            "\"name\":\"" DEVICE_NAME "\","
+            "\"device_class\":\"power\","
+            "\"unit_of_measurement\":\"VA\","
+            "\"icon\":\"mdi:transmission-tower\","
+            "\"state_topic\":\"homeassistant/sensor/" DEVICE_NAME "/state\","
+            "\"value_template\":\"{{ value_json.apparentpower}}\","
             "\"device\": {"
                 "\"name\":\"" DEVICE_NAME "\","
                 "\"sw_version\":\"2.0\","
@@ -57,6 +77,21 @@ extern unsigned short measurements_a[];
             "\"icon\":\"mdi:transmission-tower\","
             "\"state_topic\":\"homeassistant/sensor/" DEVICE_NAME "/state\","
             "\"value_template\":\"{{ value_json.current}}\","
+            "\"device\": {"
+                "\"name\":\"" DEVICE_NAME "\","
+                "\"sw_version\":\"2.0\","
+                "\"model\":\"HW V2\","
+                "\"manufacturer\":\"Hari Krishna Vemula\","
+                "\"identifiers\":[\"" DEVICE_NAME "\"]"
+            "}"
+        "}",
+        "{"
+            "\"name\":\"" DEVICE_NAME "\","
+            "\"device_class\":\"power\","
+            "\"unit_of_measurement\":\"\","
+            "\"icon\":\"mdi:transmission-tower\","
+            "\"state_topic\":\"homeassistant/sensor/" DEVICE_NAME "/state\","
+            "\"value_template\":\"{{ value_json.powerfactor}}\","
             "\"device\": {"
                 "\"name\":\"" DEVICE_NAME "\","
                 "\"sw_version\":\"2.0\","
@@ -124,7 +159,7 @@ extern unsigned short measurements_a[];
 
             serial_println("[MQTT] HA sending auto discovery");
             
-            for (int iCnt=0;iCnt<3;iCnt++) {
+            for (int iCnt=0;iCnt<statesCount;iCnt++) {
 
                 serial_print("[TOPIC]");
                 serial_println(HA_discovery_topics[iCnt]);
@@ -147,10 +182,14 @@ extern unsigned short measurements_a[];
         char msg[80];
         strcpy(msg, "{\"power\":");
             strcat(msg, String(measurements[LOCAL_MEASUREMENTS-1]).c_str());
+            strcat(msg, ",\"apparentpower\":");
+            strcat(msg, String(measurements_ap[LOCAL_MEASUREMENTS-1]).c_str());
             strcat(msg, ",\"voltage\":");
             strcat(msg, String(measurements_v[LOCAL_MEASUREMENTS-1]).c_str());
             strcat(msg, ",\"current\":");
             strcat(msg, String(measurements_a[LOCAL_MEASUREMENTS-1]).c_str());
+            strcat(msg, ",\"powerfactor\":");
+            strcat(msg, String(measurements_pf[LOCAL_MEASUREMENTS-1]).c_str());
         strcat(msg, "}");
 
         serial_print("[MQTT] HA publish: ");

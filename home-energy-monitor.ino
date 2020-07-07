@@ -65,7 +65,7 @@ void setup()
   //emon1.current(ADC_INPUT, 30);
 
   emon1.voltage(VOL_ADC_INPUT, 234.26, 1.7);  // Voltage: input pin, calibration, phase_shift
-  emon1.current(CUR_ADC_INPUT, 60.6);  // Current: Input Pin, Calibration
+  emon1.current(CUR_ADC_INPUT, 90.9);  // Current: Input Pin, Calibration
 
   // ----------------------------------------------------------------
   // TASK: Connect to WiFi & keep the connection alive.

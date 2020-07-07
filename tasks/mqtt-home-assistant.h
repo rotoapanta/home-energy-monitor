@@ -179,7 +179,7 @@ extern unsigned short measurements_pf[];
         vTaskDelete(NULL);
         }
 
-        char msg[80];
+        char msg[120];
         strcpy(msg, "{\"power\":");
             strcat(msg, String(measurements[LOCAL_MEASUREMENTS-1]).c_str());
             strcat(msg, ",\"apparentpower\":");

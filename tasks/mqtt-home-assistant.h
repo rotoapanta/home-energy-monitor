@@ -174,12 +174,13 @@ extern unsigned short measurements_pf[];
     }
 
     void sendEnergyToHA(void * parameter){
+        serial_println("[MQTT] HA sendEnergyToHA");
         if(!HA_mqtt.connected()){
         serial_println("[MQTT] Can't send to HA without MQTT. Abort.");
         vTaskDelete(NULL);
         }
-
-        char msg[120];
+        serial_print("[MQTT] HA Construct message ");
+        char msg[150];
         strcpy(msg, "{\"power\":");
             strcat(msg, String(measurements[LOCAL_MEASUREMENTS-1]).c_str());
             strcat(msg, ",\"apparentpower\":");

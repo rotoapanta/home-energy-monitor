@@ -28,12 +28,12 @@ void measureElectricity(void * parameter)
       emon1.calcVI(20,2000);
 
       double realPower       = emon1.realPower;        //extract Real Power into variable
-      float apparentPower   = emon1.apparentPower;    //extract Apparent Power into variable
-      float powerFactor     = emon1.powerFactor;      //extract Power Factor into Variable
+      double apparentPower   = emon1.apparentPower;    //extract Apparent Power into variable
+      double powerFactor     = emon1.powerFactor;      //extract Power Factor into Variable
       double supplyVoltage   = emon1.Vrms;             //extract Vrms into Variable
       double amps            = emon1.Irms;             //extract Irms into Variable
 
-
+      serial_println("[ENERGY] measured values");
 
       //double amps = emon1.calcIrms(1480);
       //double watts = amps * HOME_VOLTAGE;
@@ -51,6 +51,7 @@ void measureElectricity(void * parameter)
       Serial.print("[DEBUG] measure Index:");
       Serial.println(measureIndex);
       if(measureIndex == LOCAL_MEASUREMENTS){
+          serial_println("[DEBUG] local measurement is now 30");
           #if AWS_ENABLED == true
             xTaskCreate(
               uploadMeasurementsToAWS,
@@ -72,15 +73,17 @@ void measureElectricity(void * parameter)
               NULL              // Task handle
             );
           #endif
+                serial_println("[DEBUG] sent values to HA");
       measureIndex = 0;
       }
 
 
       long end = millis();
-
+      serial_println("[DEBUG] at the end of the measurement-1");
       // Schedule the task to run again in 1 second (while
       // taking into account how long measurement took)
       vTaskDelay((1000-(end-start)) / portTICK_PERIOD_MS);
+      serial_println("[DEBUG] at the end of the measurement-2");
     }    
 }
 

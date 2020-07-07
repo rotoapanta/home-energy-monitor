@@ -63,7 +63,7 @@
 /**
  * Local measurements
  */
-#define LOCAL_MEASUREMENTS 5
+#define LOCAL_MEASUREMENTS 30
 
 
 /**

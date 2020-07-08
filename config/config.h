@@ -1,6 +1,7 @@
 #ifndef CONFIG
 #define CONFIG
 
+
 /**
  * Set this to false to disable Serial logging
  */
@@ -63,7 +64,7 @@
 /**
  * Local measurements
  */
-#define LOCAL_MEASUREMENTS 30
+#define LOCAL_MEASUREMENTS 1
 
 
 /**
@@ -96,6 +97,12 @@
 #define HA_USER "hemqttrw"
 #define HA_PASSWORD "hemqttrw"
 
+/**
+ * Enable Over The Air Updates on ESP32
+ */
+#define OTA_ENABLED true
+ 
+
 // Check which core Arduino is running on. This is done because updating the 
 // display only works from the Arduino core.
 #if CONFIG_FREERTOS_UNICORE
@@ -103,5 +110,6 @@
 #else
 #define ARDUINO_RUNNING_CORE 1
 #endif
+
 
 #endif

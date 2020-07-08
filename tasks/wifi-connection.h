@@ -2,9 +2,13 @@
 #define TASK_WIFI_CONNECTION
 
 #include <Arduino.h>
-#include "WiFi.h"
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 #include "../config/enums.h"
 #include "../config/config.h"
+#include "arduino-esp32-ota.h"
 
 extern DisplayValues gDisplayValues;
 extern void goToDeepSleep();
@@ -41,6 +45,19 @@ void keepWiFiAlive(void * parameter){
             serial_println(F("[WIFI] FAILED"));
             vTaskDelay(WIFI_RECOVER_TIME_MS / portTICK_PERIOD_MS);
         }
+
+        serial_println("[WIFI] enable OTA..");
+        #if OTA_ENABLED == true
+        xTaskCreate(
+            enableOTA,
+            "ArduinoOTA Enable",
+            5000,             // Stack size (bytes)
+            NULL,             // Parameter
+            3,                // Task priority
+            NULL              // Task handle
+        );
+        #endif
+
 
         serial_print(F("[WIFI] Connected: "));
         serial_println(WiFi.localIP());

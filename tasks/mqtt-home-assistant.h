@@ -11,11 +11,11 @@
     WiFiClient HA_net;
     MQTTClient HA_mqtt(1024);
     int statesCount = 5;    // No. of state values part of mqtt message.
-extern unsigned short measurements[];
-extern unsigned short measurements_ap[];
-extern unsigned short measurements_v[];
-extern unsigned short measurements_a[];
-extern unsigned short measurements_pf[];
+extern double measurements[];
+extern double measurements_ap[];
+extern double measurements_v[];
+extern double measurements_a[];
+extern double measurements_pf[];
 
 // real power (W), apparent power (VA), rms voltage (V), rms current (A) and power factor
     const char* PROGMEM HA_discovery_topics[] = {
@@ -149,7 +149,6 @@ extern unsigned short measurements_pf[];
      *       so that the energy monitor shows up in the device registry.
      */
     void HADiscovery(void * parameter){
-        delay(3000);
         for(;;){
             if(!HA_mqtt.connected()){
                 serial_println("[MQTT] HA: no MQTT connection.");
@@ -176,8 +175,8 @@ extern unsigned short measurements_pf[];
     void sendEnergyToHA(void * parameter){
         serial_println("[MQTT] HA sendEnergyToHA");
         if(!HA_mqtt.connected()){
-        serial_println("[MQTT] Can't send to HA without MQTT. Abort.");
-        vTaskDelete(NULL);
+            serial_println("[MQTT] Can't send to HA without MQTT. Abort.");
+            vTaskDelete(NULL);
         }
         serial_print("[MQTT] HA Construct message ");
         char msg[150];

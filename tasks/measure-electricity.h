@@ -11,11 +11,11 @@
 
 extern DisplayValues gDisplayValues;
 extern EnergyMonitor emon1;
-extern unsigned short measurements[];
-extern unsigned short measurements_ap[];
-extern unsigned short measurements_v[];
-extern unsigned short measurements_a[];
-extern unsigned short measurements_pf[];
+extern double measurements[];
+extern double measurements_ap[];
+extern double measurements_v[];
+extern double measurements_a[];
+extern double measurements_pf[];
 
 extern unsigned char measureIndex;
 
@@ -34,7 +34,7 @@ void measureElectricity(void * parameter)
       double amps            = emon1.Irms;             //extract Irms into Variable
 
       serial_println("[ENERGY] measured values");
-
+  //    emon1.serialprint();
       //double amps = emon1.calcIrms(1480);
       //double watts = amps * HOME_VOLTAGE;
 
@@ -48,10 +48,10 @@ void measureElectricity(void * parameter)
       measurements_pf[measureIndex] = powerFactor;
 
       measureIndex++;
-      Serial.print("[DEBUG] measure Index:");
-      Serial.println(measureIndex);
+ //     Serial.print("[DEBUG] measure Index:");
+ //     Serial.println(measureIndex);
       if(measureIndex == LOCAL_MEASUREMENTS){
-          serial_println("[DEBUG] local measurement is now 30");
+   //       serial_println("[DEBUG] local measurement is now reached");
           #if AWS_ENABLED == true
             xTaskCreate(
               uploadMeasurementsToAWS,
@@ -73,17 +73,33 @@ void measureElectricity(void * parameter)
               NULL              // Task handle
             );
           #endif
-                serial_println("[DEBUG] sent values to HA");
-      measureIndex = 0;
+  //        serial_println("[DEBUG] sent values to HA");
+          measureIndex = 0;
       }
 
 
       long end = millis();
-      serial_println("[DEBUG] at the end of the measurement-1");
+/*      serial_print("[DEBUG] at the end of the measurement-1:start:");
+      serial_print(start);
+      serial_print(", end:");
+      serial_print(end);
+      serial_print(", remaining:");
+      serial_print((1000-(end-start)));
+      serial_print(", portTickperiod:");
+      serial_print(portTICK_PERIOD_MS);
+      serial_print(", delay:");
+      serial_println((1000-(end-start)) / portTICK_PERIOD_MS);
+*/
       // Schedule the task to run again in 1 second (while
       // taking into account how long measurement took)
-      vTaskDelay((1000-(end-start)) / portTICK_PERIOD_MS);
-      serial_println("[DEBUG] at the end of the measurement-2");
+      if ((1000-(end-start)) < 0) {
+        //Incase the reading failed/timed out, the delay goes very high. so waiting only for 2sec
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+      } else {
+        vTaskDelay((1000-(end-start)) / portTICK_PERIOD_MS);
+      }
+      
+      //serial_println("[DEBUG] at the end of the measurement-2");
     }    
 }
 

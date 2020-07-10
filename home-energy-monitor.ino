@@ -34,12 +34,15 @@
  *            So made to wait only 2sec incase of failure.
  *    1.0.2 - Made the local measurement array as double from unsigned short.
  *    1.0.3 - Calibration values changed.
+ *    1.0.4 - Calibration constants added and calibration changed vol to 1197 :(
  * 
  * 
  */
-#define FIRMWARE_VERSION "1.0.3"
+#define FIRMWARE_VERSION "1.0.4"
 
 
+#define VOL_CALIBRATION 1197
+#define CUR_CALIBRATION 95.6
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
@@ -93,8 +96,8 @@ void setup()
   // Initialize emon library
   //emon1.current(ADC_INPUT, 30);
 
-  emon1.voltage(VOL_ADC_INPUT, 330.30, 1.7);  // Voltage: input pin, calibration, phase_shift, Changing from 234.36 -> 330
-  emon1.current(CUR_ADC_INPUT, 95.6);  // Current: Input Pin, Calibration, Changing from 90.9 to 95.6
+  emon1.voltage(VOL_ADC_INPUT, VOL_CALIBRATION, 1.7);  // Voltage: input pin, calibration, phase_shift, Changing from 234.36 -> 330
+  emon1.current(CUR_ADC_INPUT, CUR_CALIBRATION);  // Current: Input Pin, Calibration, Changing from 90.9 to 95.6
 
   // ----------------------------------------------------------------
   // TASK: Connect to WiFi & keep the connection alive.

@@ -21,6 +21,7 @@ struct DisplayValues {
   int8_t wifi_strength;
   DEVICE_STATE currentState;
   String time;
+  double volts;
 };
 
 #if DEBUG == true

@@ -40,6 +40,7 @@ void measureElectricity(void * parameter)
 
       gDisplayValues.amps = amps;
       gDisplayValues.watt = realPower;
+      gDisplayValues.volts = supplyVoltage;
 
       measurements[measureIndex] = realPower;
       measurements_ap[measureIndex] = apparentPower;

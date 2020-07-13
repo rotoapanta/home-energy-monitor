@@ -43,7 +43,8 @@ void drawSignalStrength(){
 }
 
 void drawMeasurementProgress(){
-  const byte Y = SCREEN_WIDTH - 20;
+  //const byte Y = SCREEN_WIDTH - 20;
+  const byte Y = SCREEN_WIDTH - 10;
   display.drawRect(0, Y, measureIndex*2, 2, WHITE);
 }
 
@@ -84,11 +85,13 @@ void drawAmpsWatts(){
 
   String watts = String(gDisplayValues.watt, 0);
   String amps = String(gDisplayValues.amps, 2);
-  
+  String volts = String(gDisplayValues.volts, 0);
+
   String lblWatts = "Watt";
   String lblAmps = "Amps";
+  String lblVolts = "Volts";
 
-  const int startY = 30;
+  const int startY = 20;
 
   // Calculate how wide (pixels) the text will be once rendered.
   // Each character = 6 pixels, with font size 2, that is 12 pixels.
@@ -96,23 +99,37 @@ void drawAmpsWatts(){
   int widthAmps = (amps.length() * 12) -1;
   int widthLblAmps = lblAmps.length() * 6 - 1;
 
+
   int widthWatts = watts.length() * 12 - 1;
   int widthLblWatts = lblWatts.length() * 6 -1;
 
+  int widthVolts = (volts.length() * 12) - 1;
+  int widthLblVolts = (lblVolts.length() * 6) - 1; 
+
+
   display.setTextSize(2);
-  display.setCursor((SCREEN_HEIGHT - widthAmps) / 2, startY);
+  display.setCursor((SCREEN_HEIGHT - widthVolts) / 2, startY);
+  display.print(volts);
+
+  display.setTextSize(1);
+  display.setCursor((SCREEN_HEIGHT - widthLblVolts) / 2, startY + 15);
+  display.print(lblVolts);
+
+
+  display.setTextSize(2);
+  display.setCursor((SCREEN_HEIGHT - widthAmps) / 2, startY + 35);
   display.print(amps);
 
   display.setTextSize(1);
-  display.setCursor((SCREEN_HEIGHT - widthLblAmps) / 2, startY + 15);
+  display.setCursor((SCREEN_HEIGHT - widthLblAmps) / 2, startY + 50);
   display.print(lblAmps);
 
   display.setTextSize(2);
-  display.setCursor((SCREEN_HEIGHT - widthWatts) / 2, startY + 40);
+  display.setCursor((SCREEN_HEIGHT - widthWatts) / 2, startY + 70);
   display.print(watts);
 
   display.setTextSize(1);
-  display.setCursor((SCREEN_HEIGHT - widthLblWatts) / 2, startY + 60);
+  display.setCursor((SCREEN_HEIGHT - widthLblWatts) / 2, startY + 85);
   display.print(lblWatts);
 }
 

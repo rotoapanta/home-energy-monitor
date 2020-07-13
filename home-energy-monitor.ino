@@ -35,10 +35,10 @@
  *    1.0.2 - Made the local measurement array as double from unsigned short.
  *    1.0.3 - Calibration values changed.
  *    1.0.4 - Calibration constants added and calibration changed vol to 1197 :(
- * 
+ *    1.0.5 - Volts added to display
  * 
  */
-#define FIRMWARE_VERSION "1.0.4"
+#define FIRMWARE_VERSION "1.0.5"
 
 
 #define VOL_CALIBRATION 1197

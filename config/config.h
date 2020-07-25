@@ -64,7 +64,7 @@
 /**
  * Local measurements
  */
-#define LOCAL_MEASUREMENTS 2
+#define LOCAL_MEASUREMENTS 5
 
 
 /**
@@ -92,7 +92,7 @@
  * Wether or not you want to enable Home Assistant integration
  */
 #define HA_ENABLED true
-#define HA_ADDRESS "10.0.0.8"
+#define HA_ADDRESS "ha.harivemula.com"
 #define HA_PORT 1883
 #define HA_USER "hemqttrw"
 #define HA_PASSWORD "hemqttrw"

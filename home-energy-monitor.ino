@@ -36,13 +36,15 @@
  *    1.0.3 - Calibration values changed.
  *    1.0.4 - Calibration constants added and calibration changed vol to 1197 :(
  *    1.0.5 - Volts added to display
+ *    1.0.6 - Changed CURR Calibration to 96.6 from 95.6.
+ *    1.0.7 - Connecting to ha.harivemula.com HA instance.
  * 
  */
-#define FIRMWARE_VERSION "1.0.5"
+#define FIRMWARE_VERSION "1.0.7"
 
 
 #define VOL_CALIBRATION 1197
-#define CUR_CALIBRATION 95.6
+#define CUR_CALIBRATION 96.6
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
